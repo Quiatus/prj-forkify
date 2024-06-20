@@ -15,6 +15,8 @@ const controlRecipes = async () => {
 
     recipeView.renderSpinner()
 
+    resultsView.update(model.getSearchResultPage())
+
     await model.loadRecipe(id)
 
     recipeView.render(model.state.recipe)
@@ -45,7 +47,8 @@ const controlPagination = (goToPage) => {
 
 const controlServings = (newServings) => {
   model.updateServings(newServings)
-  recipeView.render(model.state.recipe)
+  //recipeView.render(model.state.recipe)
+  recipeView.update(model.state.recipe)
 }
 
 const init = () => {
