@@ -17,11 +17,11 @@ const controlRecipes = async () => {
     recipeView.renderSpinner()
 
     resultsView.update(model.getSearchResultPage())
-    bookmarksView.update(model.state.bookmarks)
-
+  
     await model.loadRecipe(id)
 
     recipeView.render(model.state.recipe)
+    bookmarksView.update(model.state.bookmarks)
   } catch (err) {
     recipeView.renderError()
   }
@@ -61,7 +61,12 @@ const controlAddBookmark = () => {
   bookmarksView.render(model.state.bookmarks)
 }
 
+const controlBookmarks = () => {
+  bookmarksView.render(model.state.bookmarks)
+}
+
 const init = () => {
+  bookmarksView.addHandlerRender(controlBookmarks)
   searchView.addHandlerSearch(controlSearchResults)
   paginationView.addHandlerClick(controlPagination)
   recipeView.addHandlerRender(controlRecipes)
