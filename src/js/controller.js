@@ -30,11 +30,11 @@ const controlSearchResults = async () => {
     if (!query) return
 
     await model.loadSearchResults(query)
-    
+
     resultsView.render(model.getSearchResultPage())
     paginationView.render(model.state.search)
   } catch (err) {
-    
+    console.error(err)
   }
 }
 
@@ -43,10 +43,16 @@ const controlPagination = (goToPage) => {
   paginationView.render(model.state.search)
 }
 
+const controlServings = (newServings) => {
+  model.updateServings(newServings)
+  recipeView.render(model.state.recipe)
+}
+
 const init = () => {
   recipeView.addHandlerRender(controlRecipes)
   searchView.addHandlerSearch(controlSearchResults)
   paginationView.addHandlerClick(controlPagination)
+  recipeView.addHandlerUpdateServings(controlServings)
 }
 
 init()
