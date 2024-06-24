@@ -29,7 +29,7 @@ const createRecipeObject = (data) => {
 
 export const loadRecipe = async (id) => {
     try {
-        const data = await getJSON(`${API_URL}${id}`)
+        const data = await getJSON(`${API_URL}${id}?key=${KEY}`)
         state.recipe = createRecipeObject(data)
 
         if (state.bookmarks.some(bookmark => bookmark.id === id)) state.recipe.bookmarked = true
@@ -42,7 +42,7 @@ export const loadRecipe = async (id) => {
 export const loadSearchResults = async (query) => {
     try {
         state.search.query = query
-        const data = await getJSON(`${API_URL}?search=${query}`)
+        const data = await getJSON(`${API_URL}?search=${query}&key=${KEY}`)
 
         state.search.results = data.data.recipes.map(recipe => {
             return {
@@ -50,6 +50,7 @@ export const loadSearchResults = async (query) => {
                 title: recipe.title,
                 publisher: recipe.publisher,
                 image: recipe.image_url,
+                ...(recipe.key && {key: recipe.key}) 
             }
         })
         
@@ -101,7 +102,7 @@ export const uploadRecipe = async (newRecipe) => {
         const ingredients = Object.entries(newRecipe)
         .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
         .map(ing => {
-            const ingArr = ing[1].replaceAll(' ', '').split(',');
+            const ingArr = ing[1].split(',').map(el => el.trim())
             if (ingArr.length !== 3)
             throw new Error('Wrong ingredient fromat! Please use the correct format.');
 

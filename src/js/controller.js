@@ -74,6 +74,7 @@ const controlAddRecipe = async (newRecipe) => {
     recipeView.render(model.state.recipe)
     addRecipeView.renderMessage()
     bookmarksView.render(model.state.bookmarks);
+    window.history.pushState(null, '', `#${model.state.recipe.id}`)
     setTimeout(() => addRecipeView.toggleWindow(), MODAL_CLOSE_SEC * 1000)
   } catch (err) {
     addRecipeView.renderError(err.message)
